@@ -50,6 +50,16 @@ using it on a real submission:
   responsible for verifying every claim and submitting only judgments they
   endorse.
 
+## Prerequisites
+
+- macOS or Linux with `git` and Python 3.9 or newer.
+- The Codex CLI (`codex`), signed in with an OpenAI Pro/Plus/Codex
+  subscription. Codex is the default backend for OCR, review drafting, and
+  explainer Q&A.
+- No GPU is required. PDF OCR runs the `olmOCR` CLI against a local
+  Codex-backed shim by default; a remote vLLM or hosted OCR endpoint is an
+  optional override (see [`docs/preprocessing.md`](./docs/preprocessing.md)).
+
 ## Install
 
 Clone the repository and symlink it into Codex skills:
@@ -61,21 +71,25 @@ mkdir -p ~/.codex/skills
 ln -sfn "$(pwd)" ~/.codex/skills/research-paper-review
 ```
 
-Restart Codex after installing the symlink.
+Restart Codex after installing the symlink so it discovers the skill.
 
 For development setup details, see
 [`docs/install-and-develop.md`](./docs/install-and-develop.md).
 
 ## Required Setup
 
-Authenticate Codex:
+1. Authenticate Codex and confirm the default model responds:
 
 ```bash
 codex login
 codex exec --skip-git-repo-check --model gpt-5.5 -c 'model_reasoning_effort="low"' "Return exactly: ok"
 ```
 
-Install `olmOCR` in a repo-local virtual environment:
+If `gpt-5.5` is not available on your subscription, export
+`PAPER_REVIEW_CODEX_MODEL=<model>` with a model that is; every script in this
+repo honors that override.
+
+2. Install the `olmOCR` CLI in a repo-local virtual environment:
 
 ```bash
 python3 -m venv .venv-olmocr
@@ -83,15 +97,16 @@ python3 -m venv .venv-olmocr
 .venv-olmocr/bin/python -m pip install olmocr
 ```
 
-Run mandatory preflights before any review:
+3. Run the mandatory preflights:
 
 ```bash
 scripts/check_olmocr_required.sh
 scripts/check_html_explainer_required.sh
 ```
 
-If either preflight fails, stop and repair the dependency before reviewing a
-paper.
+Each preflight prints what is missing and how to fix it. Repair and rerun
+until both report OK; the skill stops rather than reviewing with a broken
+dependency.
 
 ## Basic Use
 
@@ -103,19 +118,12 @@ Create the OCR evidence, staged artifacts, final review, quality report,
 rendered HTML, and live explainer URL.
 ```
 
-For PDF reviews, the workflow must produce canonical OCR Markdown before review
-drafting:
-
-```text
-review_artifacts/<paper_id>/ocr/<paper_id>_olmocr.md
-```
-
-The final answer should include the rendered HTML path and the local explainer
-URL, normally:
-
-```text
-http://127.0.0.1:8765
-```
+The skill runs the preflights, converts the PDF into canonical OCR Markdown at
+`review_artifacts/<paper_id>/ocr/<paper_id>_olmocr.md`, drafts the staged
+review, renders the HTML report, and starts the live explainer. The final
+answer should include the rendered HTML path and the explainer URL, normally
+`http://127.0.0.1:8765`. Open that URL in a browser to read the review with
+its audit trail and ask follow-up questions about the paper.
 
 ## Main Outputs
 
@@ -124,6 +132,7 @@ Typical review artifacts are written under `review_artifacts/<paper_id>/`:
 ```text
 evidence_manifest.json
 model_provenance.json
+timing/timing.jsonl
 timing/timing_report.md
 timing/timing_summary.json
 timing/olmocr-pages.jsonl
