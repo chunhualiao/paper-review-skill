@@ -1,0 +1,11 @@
+[run]
+source = scripts
+omit =
+    scripts/regression_test_review_fixtures.py
+    scripts/smoke_test_review_scripts.py
+
+[report]
+show_missing = True
+skip_covered = True
+fail_under = 80
+

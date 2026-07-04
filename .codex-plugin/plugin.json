@@ -1,0 +1,39 @@
+{
+  "name": "research-paper-review",
+  "version": "1.0.0",
+  "description": "Auditable academic paper review workflow with OCR evidence, timing trails, HTML reports, and live explainer Q&A.",
+  "author": {
+    "name": "Chunhua Liao"
+  },
+  "homepage": "https://github.com/chunhualiao/paper-review-skill",
+  "repository": "https://github.com/chunhualiao/paper-review-skill",
+  "license": "MIT",
+  "keywords": [
+    "research",
+    "paper-review",
+    "academic",
+    "peer-review",
+    "ocr",
+    "html-report"
+  ],
+  "skills": "./skills",
+  "interface": {
+    "displayName": "Research Paper Review",
+    "shortDescription": "Auditable academic paper reviews",
+    "longDescription": "Review academic papers with mandatory OCR evidence, staged critique, timing and model provenance, rendered HTML reports, and a local live explainer.",
+    "developerName": "Chunhua Liao",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write",
+      "Interactive"
+    ],
+    "websiteURL": "https://github.com/chunhualiao/paper-review-skill",
+    "brandColor": "#1F6FEB",
+    "defaultPrompt": [
+      "Review this paper with an auditable HTML report.",
+      "Check this paper for numerical consistency.",
+      "Draft a structured peer review for this paper."
+    ]
+  }
+}

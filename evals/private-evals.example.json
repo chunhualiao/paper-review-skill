@@ -1,0 +1,14 @@
+{
+  "schema": "paper-review-private-evals/v1",
+  "benchmarks": [
+    {
+      "id": "example-private-paper",
+      "eval_id": "staged-auditable-review",
+      "paper_pdf": "/path/to/private/paper.pdf",
+      "review_form": "/path/to/private/review_form.txt",
+      "artifact_root": "/path/to/ignored/review_artifacts/example-private-paper",
+      "prompt": "Use the research-paper-review skill to create a staged, auditable review.",
+      "rubric": "The review should be evidence-grounded, complete, technically specific, and expose the full artifact audit trail."
+    }
+  ]
+}

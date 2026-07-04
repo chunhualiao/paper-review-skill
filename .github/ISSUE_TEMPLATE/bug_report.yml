@@ -1,0 +1,53 @@
+name: Bug report
+description: Report a reproducible problem with the research-paper-review skill.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Do not attach private papers, review artifacts, or venue-confidential content.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What is broken, and what did you expect to happen?
+      placeholder: Describe the observed behavior and the expected behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+      description: List the smallest public-safe steps or commands that reproduce the issue.
+      placeholder: |
+        1. Run ...
+        2. Open ...
+        3. See ...
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation run
+      description: Paste relevant output from in-repo validation commands, if available.
+      placeholder: |
+        python3 -m pip install -e ".[dev]"
+        python3 scripts/validate_skill_evals.py
+        python3 scripts/regression_test_review_fixtures.py
+        python3 -m coverage run -m unittest discover -s tests && python3 -m coverage report -m
+        python3 scripts/smoke_test_review_scripts.py
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include OS, Python version, Codex CLI version, and whether this affects OCR, HTML rendering, or the explainer server.
+      placeholder: macOS 15, Python 3.12, codex ...
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy check
+      options:
+        - label: I have not included private paper text, confidential review content, or local-only artifact paths.
+          required: true

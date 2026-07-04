@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install dev dependencies
+        run: python3 -m pip install -e ".[dev]"
+      - name: Validate eval definitions
+        run: python3 scripts/validate_skill_evals.py
+      - name: Regression fixtures
+        run: python3 scripts/regression_test_review_fixtures.py
+      - name: Unit tests with coverage
+        run: python3 -m coverage run -m unittest discover -s tests
+      - name: Coverage report (80% gate)
+        run: python3 -m coverage report -m
+      - name: Script smoke tests
+        run: python3 scripts/smoke_test_review_scripts.py

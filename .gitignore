@@ -1,0 +1,18 @@
+.venv-olmocr/
+.DS_Store
+__pycache__/
+*.pyc
+.coverage
+*.egg-info/
+review_artifacts/
+private_evals/
+private_eval_results/
+# OCR shim logs (default lives under review_artifacts/ or $TMPDIR, ignore strays)
+codex-olmocr-shim.log
+*.log
+# Per-ticket git worktrees (managed by scripts/worktree.sh)
+.worktrees/
+# Common editor artifacts
+.vscode/
+.idea/
+*.swp

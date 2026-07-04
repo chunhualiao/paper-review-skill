@@ -1,0 +1,23 @@
+# Agent Instructions
+
+- This repository contains the `research-paper-review` skill.
+- The default AI backend for the entire skill is authenticated `codex exec`, normally through the user's OpenAI ChatGPT Pro/Plus/Codex subscription.
+- Do not require OpenAI API keys, DeepInfra, Parasail, Cirrascale, OpenRouter, or other provider subscriptions for the default workflow.
+- `olmOCR` is mandatory before running this skill in any review mode.
+- By default, run `olmOCR` through `scripts/run_olmocr.sh`; that wrapper starts `scripts/codex_exec_openai_shim.py` automatically when no external `OLMOCR_SERVER` is configured.
+- Record the default OCR inference backend as `codex-exec-shim`, not as AllenAI `olmOCR-2-7B-1025`.
+- Before reading a paper, drafting review content, filling an SC/Linklings form, or rendering HTML, run `scripts/check_olmocr_required.sh` when available.
+- The live HTML explainer server is mandatory for the review process. It uses `codex exec` by default.
+- Before or immediately after HTML rendering, run `scripts/check_html_explainer_required.sh` when available.
+- If either preflight fails, stop and install or repair the missing dependency; do not downgrade to PDF-only review, fast mode, or static-HTML-only review.
+- Timing audit trails are mandatory. Every review run must maintain `review_artifacts/<paper_id>/timing/timing.jsonl`, `timing/timing_summary.json`, and `timing/timing_report.md`.
+- Use `scripts/audit_timing.py run --artifact-root review_artifacts/<paper_id> --step <stable.step.name> --category <category> -- <command>` for preflights, review stages, quality checks, HTML rendering, and other command-driven work.
+- Use `scripts/audit_timing.py event --artifact-root review_artifacts/<paper_id> --step <stable.step.name> --category <category>` for instantaneous milestones such as explainer server startup.
+- The default `scripts/run_olmocr.sh` path automatically records `olmocr.total` and page-level Codex shim timings in `review_artifacts/<paper_id>/timing/olmocr-pages.jsonl`; it defaults to `--pages_per_group 1` for page-by-page timing.
+- Run `scripts/audit_timing.py summarize --artifact-root review_artifacts/<paper_id>` before rendering HTML and again before final delivery.
+- Render HTML with `--artifact-root review_artifacts/<paper_id>` so timing reports and raw timing logs show up in the HTML audit trail.
+- For PDF reviews, generate or verify `review_artifacts/<paper_id>/ocr/<paper_id>_olmocr.md` before review drafting.
+- After rendering HTML, start `scripts/html_explain_server.py --root <paper-folder-or-output-root> --paper <paper.pdf> --review-html <review.html>` and report the live URL, normally `http://127.0.0.1:8765`.
+- Record the explainer server command, host, port, URL, backend, status, and timing/event entry in `review_artifacts/<paper_id>/evidence_manifest.json` and/or `quality_report.md`.
+- Additional PDF-to-text extraction may be used as a search aid, but it is not a substitute for `olmOCR` evidence.
+- Do not invent timing data. If a step was not timed, record that gap explicitly and fix the workflow before delivering an auditable report.

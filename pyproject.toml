@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "research-paper-review"
+version = "1.0.0"
+description = "Review and analyze academic research papers - consistency checks, structured critique, venue-specific feedback, pre-submission review"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+    { name = "Chunhua Liao" },
+]
+keywords = [
+    "skill",
+    "research",
+    "paper-review",
+    "academic",
+    "peer-review",
+    "literature-review",
+    "pre-submission",
+    "numerical-consistency",
+]
+
+[project.optional-dependencies]
+dev = [
+    "coverage>=7.0",
+]
+
+[tool.setuptools]
+packages = []
+
+[tool.coverage.run]
+source = ["scripts"]
+omit = [
+    "scripts/regression_test_review_fixtures.py",
+    "scripts/smoke_test_review_scripts.py",
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+fail_under = 80

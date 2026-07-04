@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Development workflow
+    url: https://github.com/chunhualiao/paper-review-skill/blob/main/docs/development-workflow.md
+    about: Read the per-ticket worktree and validation workflow before contributing.
