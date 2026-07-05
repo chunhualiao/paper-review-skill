@@ -55,6 +55,7 @@ paper-review-skill/
 |   |-- check_olmocr_required.sh
 |   |-- codex_exec_openai_shim.py
 |   |-- codex_exec_with_policy.py
+|   |-- fetch_paper.py
 |   |-- html_explain_server.py
 |   |-- model_policy.py
 |   |-- normalize_olmocr_markdown.py
@@ -77,18 +78,19 @@ paper-review-skill/
 default; fast mode is an explicit downgrade):
 
 1. Run mandatory preflights (`check_olmocr_required.sh`, `check_html_explainer_required.sh`).
-2. Scope long PDFs (>15 pages) to main body plus references; create a subset under `review_artifacts/<paper_id>/source/`.
-3. Generate canonical single-column `olmOCR` Markdown via `scripts/run_olmocr.sh`.
-4. Read the scoped PDF, OCR Markdown, supplemental files, and review form.
-5. Produce timed stage artifacts under `review_artifacts/<paper_id>/stages/`: `story.md`, `presentation.md`, `evaluation.md`, `correctness.md`, and `significance.md`.
-6. Produce supporting artifacts when relevant: `checks/numerical_checks.md` and `citation_manifest.md`.
-7. Synthesize timed `initial_review.md`.
-8. Write timed `self_critique.md` (an audit of the review, not a second review of the paper).
-9. Revise into timed `final_review.md`.
-10. Run the timed independent quality critic and save `quality_report.md`.
-11. Summarize timing; render the HTML report with `--artifact-root` so audit artifacts are exposed.
-12. Start the live explainer server (`scripts/start_html_explainer.sh`) and record the live URL.
-13. Re-summarize timing and re-render after explainer startup so the final HTML audit trail is current.
+2. If the input is a URL, download it with `scripts/fetch_paper.py` and continue with the local PDF under `review_artifacts/<paper_id>/source/`.
+3. Scope long PDFs (>15 pages) to main body plus references; create a subset under `review_artifacts/<paper_id>/source/`.
+4. Generate canonical single-column `olmOCR` Markdown via `scripts/run_olmocr.sh`.
+5. Read the scoped PDF, OCR Markdown, supplemental files, and review form.
+6. Produce timed stage artifacts under `review_artifacts/<paper_id>/stages/`: `story.md`, `presentation.md`, `evaluation.md`, `correctness.md`, and `significance.md`.
+7. Produce supporting artifacts when relevant: `checks/numerical_checks.md` and `citation_manifest.md`.
+8. Synthesize timed `initial_review.md`.
+9. Write timed `self_critique.md` (an audit of the review, not a second review of the paper).
+10. Revise into timed `final_review.md`.
+11. Run the timed independent quality critic and save `quality_report.md`.
+12. Summarize timing; render the HTML report with `--artifact-root` so audit artifacts are exposed.
+13. Start the live explainer server (`scripts/start_html_explainer.sh`) and record the live URL.
+14. Re-summarize timing and re-render after explainer startup so the final HTML audit trail is current.
 
 The canonical artifact is a Markdown review using the section contract in
 `SKILL.md`. `scripts/render_review_html.py` renders it into an interactive HTML

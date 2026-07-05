@@ -55,6 +55,16 @@ If a preflight fails, stop and repair the dependency. Do not downgrade to PDF-on
 
 Use `olmOCR` for PDF-to-Markdown evidence. Markdown (`.md`) is the canonical OCR artifact because it better preserves headings, formulas, tables, lists, figures, and natural reading order than per-page plain text. Per-page `.txt` files may be kept as auxiliary search/debug artifacts only; do not use them as the main review evidence.
 
+## Paper URL Inputs
+
+If the user gives a paper URL instead of a local file path, download it before page-count scoping or OCR:
+
+```bash
+scripts/fetch_paper.py "https://example.org/paper.pdf" --artifact-root review_artifacts
+```
+
+Direct PDF URLs and arXiv `abs`/`pdf` URLs are supported. The script writes the PDF under `review_artifacts/<paper_id>/source/` and writes `<paper_id>.download.json` with the original URL, resolved URL, final URL, content type, byte size, SHA-256, and local PDF path. Use the downloaded PDF path for all later page-count, OCR, review, HTML, and explainer steps. If the URL returns HTML, a login page, a captcha page, or other non-PDF content, stop and ask the user for an accessible PDF or local file.
+
 ## Long-Paper Scope Rule
 
 Before OCR or review writing, check the PDF length.
@@ -113,20 +123,21 @@ Create `review_artifacts/<paper_id>/evidence_manifest.json` for every delivered 
 Default mode is staged, timed, and auditable:
 
 1. Start the timing ledger and time both mandatory preflights.
-2. Scope the PDF first when needed. If the PDF has more than `15` pages, create a main-body-plus-references subset and exclude appendix material unless the user explicitly requests otherwise.
-3. Generate or verify canonical single-column `olmOCR` Markdown with the default Codex-backed wrapper; plain `.txt` page files are optional search aids, not the review evidence source.
-4. Read the scoped PDF, OCR Markdown, supplemental files, and review form.
-5. Create timed stage artifacts under `review_artifacts/<paper_id>/stages/`: `story.md`, `presentation.md`, `evaluation.md`, `correctness.md`, and `significance.md`. The `story.md` stage must include a detailed mechanism trace that can support a half-page final answer to how the approach works end to end.
-6. Create supporting artifacts when relevant: `checks/numerical_checks.md` and `citation_manifest.md`.
-7. Synthesize timed `initial_review.md`.
-8. Write timed `self_critique.md` as an audit of the review, not a second review of the paper.
-9. Revise into timed `final_review.md`.
-10. Run the timed independent quality critic and save `quality_report.md`.
-11. Summarize timing.
-12. Render the HTML report with audit artifacts exposed.
-13. Start the live explainer server with `scripts/start_html_explainer.sh`, record the live URL, and record an `explainer.start` timing/event entry.
-14. If multiple papers in the same folder are being reviewed, use one shared explainer server rooted at the common parent directory, one shared port, and the shared index page as the entry point. Do not start one explainer server per paper in batch mode.
-15. Re-run timing summarization and re-render after explainer startup so the final HTML audit trail includes current server and provenance state.
+2. If the user provided a URL, run `scripts/fetch_paper.py` and continue with the downloaded local PDF.
+3. Scope the PDF first when needed. If the PDF has more than `15` pages, create a main-body-plus-references subset and exclude appendix material unless the user explicitly requests otherwise.
+4. Generate or verify canonical single-column `olmOCR` Markdown with the default Codex-backed wrapper; plain `.txt` page files are optional search aids, not the review evidence source.
+5. Read the scoped PDF, OCR Markdown, supplemental files, and review form.
+6. Create timed stage artifacts under `review_artifacts/<paper_id>/stages/`: `story.md`, `presentation.md`, `evaluation.md`, `correctness.md`, and `significance.md`. The `story.md` stage must include a detailed mechanism trace that can support a half-page final answer to how the approach works end to end.
+7. Create supporting artifacts when relevant: `checks/numerical_checks.md` and `citation_manifest.md`.
+8. Synthesize timed `initial_review.md`.
+9. Write timed `self_critique.md` as an audit of the review, not a second review of the paper.
+10. Revise into timed `final_review.md`.
+11. Run the timed independent quality critic and save `quality_report.md`.
+12. Summarize timing.
+13. Render the HTML report with audit artifacts exposed.
+14. Start the live explainer server with `scripts/start_html_explainer.sh`, record the live URL, and record an `explainer.start` timing/event entry.
+15. If multiple papers in the same folder are being reviewed, use one shared explainer server rooted at the common parent directory, one shared port, and the shared index page as the entry point. Do not start one explainer server per paper in batch mode.
+16. Re-run timing summarization and re-render after explainer startup so the final HTML audit trail includes current server and provenance state.
 
 ## Stage Question Coverage
 

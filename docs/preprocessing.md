@@ -83,6 +83,18 @@ codex login
 codex exec --skip-git-repo-check "Return exactly: ok"
 ```
 
+## Paper URL Inputs
+
+When the user provides a URL, first convert it to a local PDF artifact:
+
+```bash
+scripts/fetch_paper.py "https://example.org/paper.pdf" --artifact-root review_artifacts
+```
+
+The first supported URL forms are direct PDF URLs and arXiv `abs`/`pdf` URLs. The script stores the PDF under `review_artifacts/<paper_id>/source/`, writes `<paper_id>.download.json`, and rejects HTML, login pages, captchas, and other non-PDF responses before OCR. Continue the workflow with the downloaded local PDF path.
+
+Download metadata must be copied or referenced from `evidence_manifest.json`: `original_url`, `requested_url`, `final_url`, `http_status`, `content_type`, `byte_size`, `sha256`, `downloaded_at`, `pdf_path`, and the metadata file path. If a download fails after an artifact root is known, preserve `source/download_failure.json`.
+
 ## Required OCR Markdown
 
 Before running OCR, decide whether the review should use the full PDF or a scoped subset:
@@ -156,6 +168,17 @@ Recommended shape:
   "paper_id": "<paper_id>",
   "paper_pdf": "<path/to/paper.pdf>",
   "paper_pdf_original": "<original paper filename if a subset was created>",
+  "source_download": {
+    "original_url": "<user-provided URL or null>",
+    "requested_url": "<resolved URL or null>",
+    "final_url": "<final URL after redirects or null>",
+    "http_status": 200,
+    "content_type": "application/pdf",
+    "byte_size": 123456,
+    "sha256": "<downloaded PDF SHA-256>",
+    "downloaded_at": "YYYY-MM-DDTHH:MM:SSZ",
+    "metadata_path": "review_artifacts/<paper_id>/source/<paper_id>.download.json"
+  },
   "review_scope": {
     "requested_pages": "1-12",
     "ignored_content": [

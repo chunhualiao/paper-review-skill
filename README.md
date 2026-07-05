@@ -110,7 +110,7 @@ dependency.
 
 ## Basic Use
 
-In Codex, ask for the skill by name and provide the paper path:
+In Codex, ask for the skill by name and provide the paper path or URL:
 
 ```text
 Use the research-paper-review skill to review /path/to/paper.pdf.
@@ -118,12 +118,12 @@ Create the OCR evidence, staged artifacts, final review, quality report,
 rendered HTML, and live explainer URL.
 ```
 
-The skill runs the preflights, converts the PDF into canonical OCR Markdown at
-`review_artifacts/<paper_id>/ocr/<paper_id>_olmocr.md`, drafts the staged
-review, renders the HTML report, and starts the live explainer. The final
-answer should include the rendered HTML path and the explainer URL, normally
-`http://127.0.0.1:8765`. Open that URL in a browser to read the review with
-its audit trail and ask follow-up questions about the paper.
+For URLs, direct PDFs and arXiv `abs`/`pdf` links are downloaded under
+`review_artifacts/<paper_id>/source/` before OCR. The skill then runs the
+preflights, converts the PDF into canonical OCR Markdown, drafts the staged
+review, renders the HTML report, and starts the live explainer. The final answer
+should include the rendered HTML path and the explainer URL, normally
+`http://127.0.0.1:8765`.
 
 ## Main Outputs
 
