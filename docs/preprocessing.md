@@ -97,19 +97,24 @@ Download metadata must be copied or referenced from `evidence_manifest.json`: `o
 
 ## Required OCR Markdown
 
-Before running OCR, decide whether the review should use the full PDF or a scoped subset:
+Before running OCR, decide whether the review should use the full PDF or a scoped subset by dynamically detecting the paper's main narrative boundary. Do not use a fixed page-count cutoff:
 
-- If the paper PDF has `15` pages or fewer, review the full PDF unless the user asks for a narrower scope.
-- If the paper PDF has more than `15` pages, default to reviewing the main body plus references only.
-- For PDFs over `15` pages, exclude appendix, checklist, supplement-style back matter, and similar post-reference material unless the user explicitly asks to include them.
+```bash
+python3 scripts/scope_paper_pdf.py \
+  --pdf /path/to/paper.pdf \
+  --output review_artifacts/<paper_id>/source/<paper_id>_scoped_narrative.pdf \
+  --metadata review_artifacts/<paper_id>/source/<paper_id>_scope.json
+```
 
-For long papers, create a scoped subset PDF before OCR and place it under:
+The helper detects references, bibliography, appendix, checklist, and supplement-style boundaries from per-page text. If a references heading shares a page with conclusion or other narrative text, include that page and exclude only later references-only pages. If no boundary is detected, use the full PDF. For user-requested appendix or supplement review, pass `--force-full` or create a broader scoped PDF and record the override.
+
+Create the scoped subset PDF before OCR and place it under:
 
 ```text
 review_artifacts/<paper_id>/source/
 ```
 
-Record both the scoped subset and the original source in `evidence_manifest.json`, and describe the ignored appendix material in `review_scope`.
+Record both the scoped subset and the original source in `evidence_manifest.json`, and copy or reference the scope metadata in `review_scope`.
 
 Use the wrapper. It starts the Codex-backed OpenAI-compatible shim automatically when no `OLMOCR_SERVER` is configured, records total OCR timing, and records page-by-page shim request timing:
 
@@ -180,9 +185,12 @@ Recommended shape:
     "metadata_path": "review_artifacts/<paper_id>/source/<paper_id>.download.json"
   },
   "review_scope": {
-    "requested_pages": "1-12",
+    "requested_pages": "1-23",
+    "boundary_heading": "REFERENCES",
+    "boundary_page": 23,
+    "reason": "references heading shares a page with narrative text",
     "ignored_content": [
-      "Appendix beyond the main body and references was excluded from review"
+      "pages 24-27: references/back matter"
     ]
   },
   "paper_page_images": [],
@@ -230,7 +238,7 @@ Recommended shape:
 
 Use `null` or an empty list for unavailable supplemental inputs. For PDF reviews, `ocr_markdown` must not be null.
 
-When a long-paper subset was created, `paper_pdf` should point to the scoped subset used for OCR and review, `paper_pdf_original` should preserve the original filename, and `review_scope` should state that the appendix was ignored by default.
+When a scoped subset was created, `paper_pdf` should point to the scoped subset used for OCR and review, `paper_pdf_original` should preserve the original filename, and `review_scope` should state the detected boundary and any ignored back matter.
 
 Every generated stage, draft, critique, final review, SC draft, quality report, and HTML report should reference the manifest and timing report near the top.
 

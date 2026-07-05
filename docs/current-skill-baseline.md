@@ -59,6 +59,7 @@ paper-review-skill/
 |   |-- html_explain_server.py
 |   |-- model_policy.py
 |   |-- normalize_olmocr_markdown.py
+|   |-- scope_paper_pdf.py
 |   |-- regression_test_review_fixtures.py
 |   |-- render_review_html.py
 |   |-- review_stage_metrics.py
@@ -79,7 +80,7 @@ default; fast mode is an explicit downgrade):
 
 1. Run mandatory preflights (`check_olmocr_required.sh`, `check_html_explainer_required.sh`).
 2. If the input is a URL, download it with `scripts/fetch_paper.py` and continue with the local PDF under `review_artifacts/<paper_id>/source/`.
-3. Scope long PDFs (>15 pages) to main body plus references; create a subset under `review_artifacts/<paper_id>/source/`.
+3. Scope PDFs dynamically with `scripts/scope_paper_pdf.py`; detect the last main-narrative page and create a subset under `review_artifacts/<paper_id>/source/`.
 4. Generate canonical single-column `olmOCR` Markdown via `scripts/run_olmocr.sh`.
 5. Read the scoped PDF, OCR Markdown, supplemental files, and review form.
 6. Produce timed stage artifacts under `review_artifacts/<paper_id>/stages/`: `story.md`, `presentation.md`, `evaluation.md`, `correctness.md`, and `significance.md`.

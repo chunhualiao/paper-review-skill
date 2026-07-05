@@ -172,7 +172,7 @@ run_olmocr_with_timing() {
 
 if has_arg "--server" "$@"; then
   OLMOCR_BACKEND_LABEL="external-server"
-  run_olmocr_with_timing "$@" "${DEFAULT_OUTPUT_ARGS[@]}"
+  run_olmocr_with_timing "$@" ${DEFAULT_OUTPUT_ARGS+"${DEFAULT_OUTPUT_ARGS[@]}"}
   exit "$?"
 fi
 
@@ -186,7 +186,7 @@ if [[ -n "${OLMOCR_SERVER:-}" ]]; then
   if [[ -n "${OLMOCR_MODEL:-}" ]]; then
     has_arg "--model" "$@" || extra+=(--model "$OLMOCR_MODEL")
   fi
-  run_olmocr_with_timing "$@" "${DEFAULT_OUTPUT_ARGS[@]}" "${extra[@]}"
+  run_olmocr_with_timing "$@" ${DEFAULT_OUTPUT_ARGS+"${DEFAULT_OUTPUT_ARGS[@]}"} "${extra[@]}"
   exit "$?"
 fi
 
@@ -263,4 +263,4 @@ if [[ -n "$ARTIFACT_ROOT" ]]; then
   has_arg "--disk_logging" "$@" || extra+=(--disk_logging "$ARTIFACT_ROOT/olmocr-run.log")
 fi
 
-run_olmocr_with_timing "$@" "${DEFAULT_OUTPUT_ARGS[@]}" "${extra[@]}"
+run_olmocr_with_timing "$@" ${DEFAULT_OUTPUT_ARGS+"${DEFAULT_OUTPUT_ARGS[@]}"} "${extra[@]}"

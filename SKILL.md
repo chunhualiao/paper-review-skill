@@ -67,13 +67,18 @@ Direct PDF URLs and arXiv `abs`/`pdf` URLs are supported. The script writes the 
 
 ## Long-Paper Scope Rule
 
-Before OCR or review writing, check the PDF length.
+Before OCR or review writing, dynamically detect the last page of the paper's main narrative. Do not use a fixed page-count cutoff. Use the helper so long journal-style papers with more than 15 narrative pages are not truncated:
 
-- If the paper PDF has `15` pages or fewer, review the full PDF unless the user gives a narrower scope.
-- If the paper PDF has more than `15` pages, default to reviewing the main body plus references only.
-- For PDFs over `15` pages, exclude appendix, checklist, supplementary-style back matter, and similar post-reference material unless the user explicitly asks to include them.
+```bash
+python3 scripts/scope_paper_pdf.py \
+  --pdf /path/to/paper.pdf \
+  --output review_artifacts/<paper_id>/source/<paper_id>_scoped_narrative.pdf \
+  --metadata review_artifacts/<paper_id>/source/<paper_id>_scope.json
+```
 
-For long papers, create a scoped subset PDF before OCR so the canonical review evidence only covers the intended pages. Save the subset under `review_artifacts/<paper_id>/source/`, keep the original filename in the evidence manifest, and record the review scope explicitly with fields such as `paper_pdf_original`, `review_scope.requested_pages`, and `review_scope.ignored_content`.
+The helper looks for standalone references, bibliography, appendix, checklist, and supplement-style back matter. If the references heading shares a page with conclusion or other narrative text, include that shared page and exclude only subsequent back-matter pages. If no boundary is detected, use the full PDF. If the user explicitly asks to include appendices, supplements, or references-only pages, pass `--force-full` or create an explicitly broader scoped PDF and record the override.
+
+Save the scoped PDF under `review_artifacts/<paper_id>/source/`, keep the original filename in the evidence manifest, and record the review scope explicitly with fields such as `paper_pdf_original`, `review_scope.requested_pages`, `review_scope.boundary_heading`, `review_scope.reason`, and `review_scope.ignored_content`.
 
 Use the wrapper, not raw `olmocr`, so the Codex-backed shim, `gpt-5.5`, `ocr=low`, Markdown output, single-column normalization, and timing audit are selected automatically:
 
@@ -124,7 +129,7 @@ Default mode is staged, timed, and auditable:
 
 1. Start the timing ledger and time both mandatory preflights.
 2. If the user provided a URL, run `scripts/fetch_paper.py` and continue with the downloaded local PDF.
-3. Scope the PDF first when needed. If the PDF has more than `15` pages, create a main-body-plus-references subset and exclude appendix material unless the user explicitly requests otherwise.
+3. Scope the PDF first with `scripts/scope_paper_pdf.py`; use the dynamically detected main-narrative PDF unless the user explicitly requests a broader scope.
 4. Generate or verify canonical single-column `olmOCR` Markdown with the default Codex-backed wrapper; plain `.txt` page files are optional search aids, not the review evidence source.
 5. Read the scoped PDF, OCR Markdown, supplemental files, and review form.
 6. Create timed stage artifacts under `review_artifacts/<paper_id>/stages/`: `story.md`, `presentation.md`, `evaluation.md`, `correctness.md`, and `significance.md`. The `story.md` stage must include a detailed mechanism trace that can support a half-page final answer to how the approach works end to end.

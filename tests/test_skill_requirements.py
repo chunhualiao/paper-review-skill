@@ -25,13 +25,14 @@ class SkillRequirementTest(unittest.TestCase):
         self.assertIn("single-column", text)
         self.assertIn("normalize_olmocr_markdown.py", text)
 
-    def test_long_papers_default_to_main_body_plus_references(self):
+    def test_papers_use_dynamic_narrative_scope_detection(self):
         text = SKILL_PATH.read_text(encoding="utf-8")
 
         self.assertIn("Long-Paper Scope Rule", text)
-        self.assertIn("more than `15` pages", text)
-        self.assertIn("main body plus references only", text)
-        self.assertIn("exclude appendix", text.lower())
+        self.assertIn("dynamically detect the last page", text)
+        self.assertIn("Do not use a fixed page-count cutoff", text)
+        self.assertIn("scope_paper_pdf.py", text)
+        self.assertIn("references heading shares a page", text)
         self.assertIn("paper_pdf_original", text)
         self.assertIn("review_scope", text)
 
