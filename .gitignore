@@ -11,8 +11,8 @@ private_eval_results/
 codex-olmocr-shim.log
 *.log
 # Generated presentation outputs
-docs/research-paper-review-10min-talk/.build/
-docs/research-paper-review-10min-talk/*.pdf
+docs/paper-review-skill-10min-talk/.build/
+docs/paper-review-skill-10min-talk/*.pdf
 # Per-ticket git worktrees (managed by scripts/worktree.sh)
 .worktrees/
 # Common editor artifacts

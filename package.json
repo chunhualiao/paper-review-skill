@@ -1,7 +1,7 @@
 {
-  "name": "research-paper-review",
+  "name": "paper-review-skill",
   "version": "1.0.0",
-  "description": "Review and analyze academic research papers — consistency checks, structured critique, venue-specific feedback, pre-submission review",
+  "description": "Auditable Codex skill for academic paper reviews with OCR evidence, staged critique, HTML reports, and explainer Q&A",
   "author": "Chunhua Liao",
   "contributors": [
     "Armen Sulejmani",

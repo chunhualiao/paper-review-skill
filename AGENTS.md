@@ -1,6 +1,7 @@
 # Agent Instructions
 
-- This repository contains the `research-paper-review` skill.
+- This repository contains Paper Review Skill. Its Codex skill identifier is
+  `research-paper-review`.
 - The default AI backend for the entire skill is authenticated `codex exec`, normally through the user's OpenAI ChatGPT Pro/Plus/Codex subscription.
 - Do not require OpenAI API keys, DeepInfra, Parasail, Cirrascale, OpenRouter, or other provider subscriptions for the default workflow.
 - `olmOCR` is mandatory before running this skill in any review mode.

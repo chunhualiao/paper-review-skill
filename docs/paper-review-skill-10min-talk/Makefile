@@ -2,10 +2,10 @@ LATEXMK ?= latexmk
 NEATO ?= neato
 
 BUILD_DIR := .build
-TEX := research-paper-review-10min-talk.tex
-DECK_PDF := research-paper-review-10min-talk.pdf
-DIAGRAM_DOT := research-paper-review-system-diagram.dot
-DIAGRAM_PDF := research-paper-review-system-diagram.pdf
+TEX := paper-review-skill-10min-talk.tex
+DECK_PDF := paper-review-skill-10min-talk.pdf
+DIAGRAM_DOT := paper-review-skill-system-diagram.dot
+DIAGRAM_PDF := paper-review-skill-system-diagram.pdf
 
 .PHONY: all clean
 

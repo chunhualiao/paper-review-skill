@@ -3,7 +3,7 @@ name: research-paper-review
 description: Review and analyze academic research papers. Use this skill when the user asks to review a paper, analyze a publication, summarize research, critique methodology, extract key findings, compare papers, check numerical or statistical consistency, assess novelty and contributions, fill peer-review forms, generate auditable HTML reports, or interactively inspect a paper review.
 ---
 
-# Research Paper Review
+# Paper Review Skill
 
 Use this skill to produce evidence-grounded academic paper reviews with auditable artifacts, timing trails, model provenance, and an interactive HTML explainer.
 

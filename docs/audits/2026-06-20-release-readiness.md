@@ -5,7 +5,7 @@
 > reference only and is no longer the source of truth. Track status via the
 > GitHub issues instead.
 
-Pre-release review of `research-paper-review` conducted against the current
+Pre-release review of Paper Review Skill conducted against the current
 `main` branch (commit `3be36e7`). Findings are prioritized and each item lists
 the issue, why it matters for a public release, and a recommended fix.
 

@@ -3,7 +3,7 @@
 Date: 2026-06-20
 
 Scope: repository structure, canonical skill runbook, scripts, tests, docs, CI,
-plugin metadata, and local validation behavior for `research-paper-review`.
+plugin metadata, and local validation behavior for Paper Review Skill.
 
 ## Executive Summary
 
@@ -156,7 +156,7 @@ Evidence:
 Why it matters:
 
 The project can catch structural regressions, but not whether the review quality
-improves or degrades. A paper-review skill needs repeated private benchmark
+improves or degrades. Paper Review Skill needs repeated private benchmark
 cases because output quality, evidence grounding, and criticism specificity are
 the core product.
 

@@ -27,7 +27,7 @@ manifest shape without including real paper content.
       "paper_pdf": "/absolute/path/to/private/paper.pdf",
       "review_form": "/absolute/path/to/private/review_form.txt",
       "artifact_root": "/absolute/path/to/ignored/review_artifacts/local-paper-id",
-      "prompt": "Review this paper with the research-paper-review skill.",
+      "prompt": "Review this paper with Paper Review Skill (`research-paper-review`).",
       "rubric": "Evidence-grounded, complete, technically specific, auditable."
     }
   ]

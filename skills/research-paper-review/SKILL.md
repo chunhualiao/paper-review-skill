@@ -3,7 +3,7 @@ name: research-paper-review
 description: Review and analyze academic research papers. Use this plugin skill when the user asks to review a paper, critique methodology, check numerical consistency, fill peer-review forms, generate auditable HTML reports, or interactively inspect a paper review.
 ---
 
-# Research Paper Review Plugin Entry
+# Paper Review Skill Plugin Entry
 
 This plugin entry delegates to the canonical skill runbook at `../../SKILL.md`.
 

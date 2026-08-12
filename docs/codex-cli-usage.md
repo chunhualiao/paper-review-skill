@@ -94,7 +94,7 @@ Example after generating `review_artifacts/<paper_id>/ocr/<paper_id>_olmocr.md`:
 codex exec \
   --model gpt-5.5 \
   -C /path/to/paper-review-skill \
-  "Use the research-paper-review skill for <paper_id>. Inputs: /path/to/private/paper.pdf and review_artifacts/<paper_id>/ocr/<paper_id>_olmocr.md. Create the evidence manifest, stage artifacts, prompt/response audit trail, initial review, self-critique, final review, quality report, and rendered HTML."
+  "Use Paper Review Skill (`research-paper-review`) for <paper_id>. Inputs: /path/to/private/paper.pdf and review_artifacts/<paper_id>/ocr/<paper_id>_olmocr.md. Create the evidence manifest, stage artifacts, prompt/response audit trail, initial review, self-critique, final review, quality report, and rendered HTML."
 ```
 
 Use the model name configured for your account. If you prefer a profile:
@@ -103,7 +103,7 @@ Use the model name configured for your account. If you prefer a profile:
 codex exec \
   --profile my-review-profile \
   -C /path/to/paper-review-skill \
-  "Use the research-paper-review skill for /path/to/private/paper_folder with review_artifacts/<paper_id>/ocr/<paper_id>_olmocr.md."
+  "Use Paper Review Skill (`research-paper-review`) for /path/to/private/paper_folder with review_artifacts/<paper_id>/ocr/<paper_id>_olmocr.md."
 ```
 
 ## Explicit Fast Review Invocation
@@ -114,7 +114,7 @@ Fast mode is an explicit downgrade for quick reviews or missing staged-mode prer
 codex exec \
   --model gpt-5.5 \
   -C /path/to/paper-review-skill \
-  "Use the research-paper-review skill in fast mode. Review /path/to/private/paper.pdf for the target venue. Write review_comments.md and answer the reviewer priority questions."
+  "Use Paper Review Skill (`research-paper-review`) in fast mode. Review /path/to/private/paper.pdf for the target venue. Write review_comments.md and answer the reviewer priority questions."
 ```
 
 ## Rendering and Follow-Up Q&A

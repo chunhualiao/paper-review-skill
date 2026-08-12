@@ -344,11 +344,11 @@ class RepoHygieneTest(unittest.TestCase):
         path = ROOT / ".codex-plugin" / "plugin.json"
         self.assertTrue(path.is_file(), ".codex-plugin/plugin.json is missing")
         manifest = json.loads(path.read_text(encoding="utf-8"))
-        self.assertEqual(manifest["name"], "research-paper-review")
+        self.assertEqual(manifest["name"], "paper-review-skill")
         self.assertEqual(manifest["version"], "1.0.0")
         self.assertEqual(manifest["author"]["name"], "Chunhua Liao")
         self.assertEqual(manifest["skills"], "./skills")
-        self.assertEqual(manifest["interface"]["displayName"], "Research Paper Review")
+        self.assertEqual(manifest["interface"]["displayName"], "Paper Review Skill")
         self.assertEqual(manifest["interface"]["developerName"], "Chunhua Liao")
 
     def test_plugin_skill_wrapper_delegates_to_canonical_skill(self):

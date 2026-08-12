@@ -113,7 +113,7 @@ class SkillRequirementTest(unittest.TestCase):
         validator = ROOT / "scripts" / "validate_skill_evals.py"
 
         self.assertTrue(openai_yaml.is_file())
-        self.assertIn("Research Paper Review", openai_yaml.read_text(encoding="utf-8"))
+        self.assertIn("Paper Review Skill", openai_yaml.read_text(encoding="utf-8"))
         self.assertTrue(evals_json.is_file())
         self.assertTrue(validator.is_file())
 

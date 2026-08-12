@@ -1,5 +1,5 @@
 name: Bug report
-description: Report a reproducible problem with the research-paper-review skill.
+description: Report a reproducible problem with Paper Review Skill.
 title: "[Bug]: "
 labels:
   - bug

@@ -1,6 +1,6 @@
 # Development Workflow: Worktrees, PRs, and CI
 
-This is the canonical workflow for working on tickets in `research-paper-review`.
+This is the canonical workflow for working on tickets in Paper Review Skill.
 Every change lands on `main` through a pull request, from a dedicated git
 worktree named after the ticket number.
 

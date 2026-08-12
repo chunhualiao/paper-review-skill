@@ -1,10 +1,11 @@
-# research-paper-review
+# Paper Review Skill
 
 An auditable Codex skill for reviewing academic research papers.
 
 It turns a submitted paper into a structured peer-review package with OCR
 evidence, staged critique, timing/provenance logs, an HTML report, and a local
-follow-up explainer.
+follow-up explainer. Project/repo/package slug: `paper-review-skill`; Codex
+skill identifier: `research-paper-review`.
 
 This skill is an implementation of the workflow described in:
 
@@ -110,10 +111,11 @@ dependency.
 
 ## Basic Use
 
-In Codex, ask for the skill by name and provide the paper path or URL:
+In Codex, ask for the Paper Review Skill by its Codex skill identifier and
+provide the paper path or URL:
 
 ```text
-Use the research-paper-review skill to review /path/to/paper.pdf.
+Use Paper Review Skill (`research-paper-review`) to review /path/to/paper.pdf.
 Create the OCR evidence, staged artifacts, final review, quality report,
 rendered HTML, and live explainer URL.
 ```

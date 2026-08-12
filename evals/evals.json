@@ -3,7 +3,7 @@
   "evals": [
     {
       "id": "staged-auditable-review",
-      "prompt": "Use the research-paper-review skill to review the private PDF at /path/to/private/paper.pdf for a systems venue. Generate staged artifacts, a final Markdown review, an auditable HTML report, and start the explainer server.",
+      "prompt": "Use Paper Review Skill (`research-paper-review`) to review the private PDF at /path/to/private/paper.pdf for a systems venue. Generate staged artifacts, a final Markdown review, an auditable HTML report, and start the explainer server.",
       "expected_output": "A staged, evidence-grounded review with OCR Markdown evidence, timing and model provenance, final_review.md, quality_report.md, rendered HTML, and live explainer status recorded.",
       "assertions": [
         "The workflow runs mandatory OCR and HTML explainer preflights before drafting the review.",
@@ -15,7 +15,7 @@
     },
     {
       "id": "evaluation-and-numerical-scrutiny",
-      "prompt": "Use the research-paper-review skill on a provided OCR Markdown paper and focus on whether the evaluation fairly supports the paper's claims. Check statistics, negative results, baselines, costs, and numerical consistency.",
+      "prompt": "Use Paper Review Skill (`research-paper-review`) on a provided OCR Markdown paper and focus on whether the evaluation fairly supports the paper's claims. Check statistics, negative results, baselines, costs, and numerical consistency.",
       "expected_output": "A review section set that separates paper evidence from reviewer judgment, records numerical checks when relevant, and states missing statistical or negative-result evidence without inventing it.",
       "assertions": [
         "The review identifies whether state-of-the-art comparisons are fair and sufficiently explained.",
@@ -27,7 +27,7 @@
     },
     {
       "id": "venue-form-adaptation",
-      "prompt": "Use the research-paper-review skill to convert a completed canonical Markdown review into an SC/Linklings-style offline review form while preserving the canonical Markdown and HTML artifacts.",
+      "prompt": "Use Paper Review Skill (`research-paper-review`) to convert a completed canonical Markdown review into an SC/Linklings-style offline review form while preserving the canonical Markdown and HTML artifacts.",
       "expected_output": "A venue-form adaptation that maps canonical sections into the form fields without scattering evidence or losing the author-facing review structure.",
       "assertions": [
         "The canonical Markdown review remains the source artifact.",

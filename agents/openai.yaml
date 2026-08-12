@@ -1,4 +1,4 @@
 interface:
-  display_name: "Research Paper Review"
+  display_name: "Paper Review Skill"
   short_description: "Auditable academic paper reviews"
   default_prompt: "Use $research-paper-review to review this paper and generate an auditable HTML report."

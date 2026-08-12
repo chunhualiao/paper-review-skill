@@ -85,7 +85,7 @@ def validate(path: Path) -> None:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Validate paper-review skill eval definitions.")
+    parser = argparse.ArgumentParser(description="Validate Paper Review Skill eval definitions.")
     parser.add_argument(
         "path",
         nargs="?",

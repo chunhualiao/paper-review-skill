@@ -2,8 +2,9 @@
 
 Design note last updated: 2026-06-20.
 
-This note records public, reusable design context for the `research-paper-review`
-skill. It avoids retaining paper-specific review fixtures, paper identifiers, or
+This note records public, reusable design context for Paper Review Skill. Its
+Codex skill identifier is `research-paper-review`. This note avoids retaining
+paper-specific review fixtures, paper identifiers, or
 local private paper paths. For the authoritative runbook, see `SKILL.md`; for
 change history, see `CHANGELOG.md`.
 

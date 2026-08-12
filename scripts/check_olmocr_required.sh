@@ -14,7 +14,7 @@ case "${1:-}" in
     cat <<EOF
 Usage: scripts/check_olmocr_required.sh
 
-Verify required OCR dependencies before using the research-paper-review skill.
+Verify required OCR dependencies before using Paper Review Skill.
 
 Checks:
   - repo-local or PATH olmOCR command
@@ -34,7 +34,7 @@ elif command -v olmocr >/dev/null 2>&1 && olmocr --help >/dev/null 2>&1; then
   OLMOCR_OK="$(command -v olmocr) --help"
 else
   cat >&2 <<'EOF'
-error: olmOCR is mandatory before running the research-paper-review skill.
+error: olmOCR is mandatory before running Paper Review Skill.
 
 Install the repo-local OCR environment, then rerun this preflight:
 

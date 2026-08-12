@@ -17,7 +17,7 @@ from email.message import Message
 from pathlib import Path
 
 
-USER_AGENT = "research-paper-review/1.0 (+https://github.com/chunhualiao/paper-review-skill)"
+USER_AGENT = "paper-review-skill/1.0 (+https://github.com/chunhualiao/paper-review-skill)"
 MAX_DOWNLOAD_BYTES = 200 * 1024 * 1024
 MIN_PDF_BYTES = 8
 

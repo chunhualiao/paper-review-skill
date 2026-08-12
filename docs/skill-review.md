@@ -1,4 +1,4 @@
-# Research Paper Review Skill Review
+# Paper Review Skill Review
 
 Updated on 2026-06-05 after the packaging, validation, and public-release cleanup work.
 
