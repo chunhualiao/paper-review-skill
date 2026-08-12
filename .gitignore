@@ -10,6 +10,9 @@ private_eval_results/
 # OCR shim logs (default lives under review_artifacts/ or $TMPDIR, ignore strays)
 codex-olmocr-shim.log
 *.log
+# Generated presentation outputs
+docs/research-paper-review-10min-talk/.build/
+docs/research-paper-review-10min-talk/*.pdf
 # Per-ticket git worktrees (managed by scripts/worktree.sh)
 .worktrees/
 # Common editor artifacts

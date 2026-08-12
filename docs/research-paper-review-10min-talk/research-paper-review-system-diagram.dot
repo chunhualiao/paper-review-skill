@@ -1,0 +1,176 @@
+digraph PaperReviewSystem {
+  graph [
+    layout=neato,
+    bgcolor="transparent",
+    outputorder=edgesfirst,
+    overlap=false,
+    splines=line,
+    pad="0.12",
+    margin="0",
+    fontname="Helvetica"
+  ];
+
+  node [
+    fontname="Helvetica",
+    fontsize=16,
+    penwidth=1.8,
+    margin="0.10,0.07"
+  ];
+
+  edge [
+    fontname="Helvetica",
+    fontsize=11,
+    color="#3F4A5A",
+    arrowsize=0.70,
+    penwidth=1.5
+  ];
+
+  input_style [
+    label="INPUTS",
+    pos="70,382!",
+    shape=plaintext,
+    fontcolor="#2F5D0A",
+    fontsize=21
+  ];
+
+  process_style [
+    label="PROCESSING UNITS",
+    pos="285,382!",
+    shape=plaintext,
+    fontcolor="#004785",
+    fontsize=21
+  ];
+
+  output_style [
+    label="OUTPUTS",
+    pos="640,382!",
+    shape=plaintext,
+    fontcolor="#8A6400",
+    fontsize=21
+  ];
+
+  paper [
+    label="Paper PDF\nor URL",
+    pos="70,285!",
+    width=1.35,
+    height=0.58,
+    shape=parallelogram,
+    color="#78A22F",
+    fillcolor="#EAF5E0",
+    style=filled
+  ];
+
+  context [
+    label="Review form\nMD/text\nLaTeX + supp.",
+    pos="52,180!",
+    width=1.35,
+    height=0.62,
+    shape=parallelogram,
+    fontsize=14,
+    margin="0.05,0.03",
+    color="#78A22F",
+    fillcolor="#EAF5E0",
+    style=filled
+  ];
+
+  intake [
+    label="Intake and\npreflights",
+    pos="285,330!",
+    width=1.45,
+    height=0.65,
+    shape=box,
+    color="#004785",
+    fillcolor="#E8F1FA",
+    style="rounded,filled"
+  ];
+
+  ocr [
+    label="Scope PDF and\nextract OCR Markdown",
+    pos="285,260!",
+    width=2.05,
+    height=0.62,
+    shape=box,
+    color="#004785",
+    fillcolor="#E8F1FA",
+    style="rounded,filled"
+  ];
+
+  stages [
+    label="Staged critique\nstory | evaluation\ncorrectness | significance",
+    pos="285,190!",
+    width=2.20,
+    height=0.82,
+    shape=box,
+    color="#004785",
+    fillcolor="#E8F1FA",
+    style="rounded,filled"
+  ];
+
+  quality [
+    label="Synthesis,\nself-critique,\nquality gate",
+    pos="285,115!",
+    width=1.70,
+    height=0.80,
+    shape=box,
+    color="#004785",
+    fillcolor="#E8F1FA",
+    style="rounded,filled"
+  ];
+
+  render [
+    label="Render HTML\nand start explainer",
+    pos="285,42!",
+    width=1.70,
+    height=0.70,
+    shape=box,
+    color="#004785",
+    fillcolor="#E8F1FA",
+    style="rounded,filled"
+  ];
+
+  backend [
+    label="SUPPORT\ncodex exec\nOCR + review + Q&A",
+    pos="505,330!",
+    width=1.45,
+    height=0.72,
+    shape=hexagon,
+    color="#718096",
+    fillcolor="#FFFFFF",
+    style="dashed,filled"
+  ];
+
+  audit [
+    label="Audit bundle\nOCR Markdown\nmanifests + provenance\nstage/final reviews\ntiming logs",
+    pos="640,215!",
+    width=2.10,
+    height=1.25,
+    shape=folder,
+    color="#EBAA00",
+    fillcolor="#FFF4D6",
+    style=filled
+  ];
+
+  delivery [
+    label="Delivered interface\nHTML report\nexplainer URL",
+    pos="640,62!",
+    width=2.05,
+    height=0.95,
+    shape=folder,
+    color="#EBAA00",
+    fillcolor="#FFF4D6",
+    style=filled
+  ];
+
+  paper -> intake;
+  context -> intake;
+  intake -> ocr;
+  ocr -> stages;
+  stages -> quality;
+  quality -> render;
+
+  ocr -> audit [style=dotted, color="#8A6400"];
+  render -> audit [style=dotted, color="#8A6400"];
+  render -> delivery;
+
+  backend -> stages [style=dashed, color="#718096"];
+}

@@ -1,0 +1,375 @@
+\documentclass[aspectratio=169,professionalfonts]{beamer}
+
+\usetheme{Madrid}
+\usecolortheme{dolphin}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{ragged2e}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\graphicspath{{docs/research-paper-review-10min-talk/}{./}}
+
+\definecolor{llnlblue}{RGB}{0,71,133}
+\definecolor{llnlgold}{RGB}{235,170,0}
+\definecolor{slate}{RGB}{45,55,72}
+\definecolor{softgray}{RGB}{245,247,250}
+
+\setbeamercolor{structure}{fg=llnlblue}
+\setbeamercolor{title}{fg=white,bg=llnlblue}
+\setbeamercolor{frametitle}{fg=white,bg=llnlblue}
+\setbeamercolor{block title}{fg=white,bg=llnlblue}
+\setbeamercolor{block body}{fg=slate,bg=softgray}
+\setbeamercolor{alerted text}{fg=llnlgold}
+\setbeamerfont{title}{series=\bfseries,size=\LARGE}
+\setbeamerfont{frametitle}{series=\bfseries,size=\large}
+\setbeamerfont{block title}{series=\bfseries}
+\setbeamerfont{normal text}{size=\large}
+
+\newcommand{\artifact}[1]{\texttt{\footnotesize #1}}
+\newcommand{\claim}[1]{\textbf{\color{llnlblue}#1}}
+
+\title[Auditable Paper Review]{Auditable AI-Assisted Paper Review}
+\subtitle{The \texttt{research-paper-review} Codex skill}
+\author{Project talk draft}
+\institute{paper-review-skill}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+  \note{
+  Timing: about 45 seconds.
+
+  Opening: this project is not just a prompt for reviewing papers. It is a
+  local workflow that tries to make AI-assisted peer review inspectable,
+  repeatable, and bounded by human reviewer responsibility.
+
+  [Sources] README.md; SKILL.md.
+  }
+\end{frame}
+
+\begin{frame}{The motivation was reproduction, then auditability}
+  \begin{block}{Reference system}
+    Biswas et al., \textit{AI-Assisted Peer Review at Scale: The AAAI-26 AI
+    Review Pilot} (arXiv:2604.13940) describes an AI-assisted workflow for
+    producing structured peer-review feedback at conference scale.
+  \end{block}
+
+  \vspace{0.7em}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.47\textwidth}
+      \claim{Reproduce}\\
+      Implement the paper's staged review workflow as a Codex skill.
+    \column{0.47\textwidth}
+      \claim{Extend}\\
+      Add OCR evidence, timing and provenance trails, rendered HTML, and a live
+      web explainer.
+  \end{columns}
+
+  \note{
+  Timing: about 1 minute.
+
+  State the origin clearly: the first goal was to reproduce the workflow
+  described in the AAAI-26 AI Review Pilot paper. The project then adds local
+  engineering around that reproduced system: OCR evidence, timing and provenance
+  logs, HTML rendering, and a live explainer. This sets up the next slide,
+  which names the concrete artifact package.
+
+  [Sources] README.md citation and project description; docs/audit-trails.md;
+  docs/preprocessing.md.
+  }
+\end{frame}
+
+\begin{frame}{The project turns one paper into an auditable review package}
+  \begin{block}{One-sentence description}
+    \texttt{research-paper-review} is a Codex skill that converts a paper into
+    OCR-backed evidence, staged critique, timing and provenance logs, a final
+    review, rendered HTML, and a local follow-up explainer.
+  \end{block}
+
+  \vspace{0.8em}
+  \begin{tabular}{@{}p{0.28\textwidth}p{0.64\textwidth}@{}}
+    \toprule
+    Input & PDF, URL, Markdown, text, LaTeX, or review-form material \\
+    Output & Review artifacts under \artifact{review\_artifacts/<paper\_id>/} \\
+    Default backend & Authenticated \artifact{codex exec}; no separate API key required \\
+    Completion bar & HTML report plus running local explainer server \\
+    \bottomrule
+  \end{tabular}
+
+  \note{
+  Timing: about 1 minute.
+
+  This slide names the product boundary. The default workflow is built around
+  Codex authentication and local scripts, not separate provider subscriptions.
+  It supports URL inputs by downloading supported PDF URLs into the artifact
+  tree before review.
+
+  [Sources] README.md What It Does, Prerequisites, Basic Use, Main Outputs;
+  docs/preprocessing.md.
+  }
+\end{frame}
+
+\begin{frame}{The system separates inputs, processing, and outputs}
+  \centering
+  \includegraphics[width=0.98\textwidth,height=0.86\textheight,keepaspectratio]{research-paper-review-system-diagram.pdf}
+
+  \note{
+  Timing: about 45 seconds.
+
+  Use this slide to orient the audience before walking through the workflow.
+  Inputs enter on the left, processing units run through the middle, and outputs
+  leave on the right. Green parallelograms are inputs, blue rounded rectangles
+  are processing units, gold folders are outputs, and the dashed gray node shows
+  the shared Codex backend used by OCR, review drafting, and explainer Q\&A.
+
+  [Sources] README.md Main Outputs; SKILL.md Default Workflow;
+  docs/preprocessing.md; docs/audit-trails.md.
+  }
+\end{frame}
+
+\begin{frame}{The workflow is staged so each claim has a trail}
+  \begin{enumerate}
+    \item Run mandatory OCR and HTML explainer preflights.
+    \item Fetch or scope the PDF and produce canonical \texttt{olmOCR} Markdown.
+    \item Draft focused stages: story, presentation, evaluation, correctness,
+      and significance.
+    \item Synthesize an initial review, audit it with self-critique, then revise.
+    \item Run an independent quality critic before final rendering.
+    \item Render HTML with artifacts exposed and start the explainer server.
+  \end{enumerate}
+
+  \note{
+  Timing: about 1 minute.
+
+  Present this as a pipeline of accountability rather than a chain of prompts.
+  Each stage has a different review job, and the downstream artifacts make it
+  possible to inspect where final comments came from.
+
+  [Sources] SKILL.md Default Workflow; docs/current-skill-baseline.md Current
+  Skill Workflow.
+  }
+\end{frame}
+
+\begin{frame}{The design forces the boring parts to happen every time}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+      \begin{block}{Mandatory checks}
+        \begin{itemize}
+          \item \artifact{check\_olmocr\_required.sh}
+          \item \artifact{check\_html\_explainer\_required.sh}
+          \item Stop on failure; do not fall back to static or PDF-only review
+        \end{itemize}
+      \end{block}
+    \column{0.48\textwidth}
+      \begin{block}{Default backend policy}
+        \begin{itemize}
+          \item \artifact{codex exec} for OCR shim, review drafting, and Q\&A
+          \item \artifact{olmocr\_backend: codex-exec-shim}
+          \item Hosted OCR providers are explicit overrides
+        \end{itemize}
+      \end{block}
+  \end{columns}
+
+  \vspace{0.5em}
+  \begin{block}{First-principles reason}
+    A trustworthy review aid must first preserve what was read, how it was
+    transformed, and what system produced each judgment.
+  \end{block}
+
+  \note{
+  Timing: about 1 minute.
+
+  This is the core engineering choice: make dependency health, OCR evidence,
+  and backend labeling non-optional. The repo instructions specifically call
+  out that the default OCR backend should be recorded as codex-exec-shim, not
+  as AllenAI olmOCR-2-7B-1025.
+
+  [Sources] AGENTS.md project instructions; docs/preprocessing.md Mandatory
+  Preflights and Important backend label.
+  }
+\end{frame}
+
+\begin{frame}{The artifact tree is the audit interface}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.52\textwidth}
+      \begin{itemize}
+        \item \artifact{evidence\_manifest.json}
+        \item \artifact{model\_provenance.json}
+        \item \artifact{ocr/<paper\_id>\_olmocr.md}
+        \item \artifact{stages/*.md}
+        \item \artifact{initial\_review.md}
+        \item \artifact{self\_critique.md}
+        \item \artifact{final\_review.md}
+      \end{itemize}
+    \column{0.43\textwidth}
+      \begin{itemize}
+        \item \artifact{quality\_report.md}
+        \item \artifact{timing/timing.jsonl}
+        \item \artifact{timing/timing\_summary.json}
+        \item \artifact{timing/timing\_report.md}
+        \item \artifact{timing/olmocr-pages.jsonl}
+        \item \artifact{<paper\_id>\_review\_comments.html}
+      \end{itemize}
+  \end{columns}
+
+  \vspace{0.4em}
+  \begin{block}{Practical effect}
+    The deliverable is not a single review blob; it is a review plus the
+    evidence needed to challenge, revise, or reproduce it.
+  \end{block}
+
+  \note{
+  Timing: about 1 minute.
+
+  Explain that this directory structure gives both humans and tools stable
+  places to inspect the workflow. It also supports resume behavior and batch
+  processing because completion can be checked artifact by artifact.
+
+  [Sources] README.md Main Outputs; docs/audit-trails.md Required Artifact
+  Layout; docs/batch-processing.md Resume Behavior.
+  }
+\end{frame}
+
+\begin{frame}{Review quality is treated as a separate artifact}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+      \begin{block}{Stage coverage}
+        \begin{itemize}
+          \item End-to-end mechanism trace
+          \item Technical soundness
+          \item Evaluation and statistics
+          \item Significance and positioning
+          \item Writing and presentation
+        \end{itemize}
+      \end{block}
+    \column{0.48\textwidth}
+      \begin{block}{Quality gate}
+        \begin{itemize}
+          \item Missing required sections
+          \item Unsupported criticism
+          \item Identity leakage
+          \item Rating/critique mismatch
+          \item Broken Markdown or HTML
+        \end{itemize}
+      \end{block}
+  \end{columns}
+
+  \note{
+  Timing: about 1 minute.
+
+  The quality critic is not another paper reviewer. It reviews the generated
+  review for completeness, grounding, appropriateness, and renderability. This
+  separation keeps the pipeline from silently submitting a polished but weak
+  or unsupported review.
+
+  [Sources] SKILL.md Review Requirements; docs/quality-critic.md.
+  }
+\end{frame}
+
+\begin{frame}{The HTML explainer closes the loop after rendering}
+  \begin{block}{Why it matters}
+    Reviewers rarely finish their thinking when the first draft appears. The
+    local explainer lets them select review text or rendered artifacts and ask
+    follow-up questions against the review package.
+  \end{block}
+
+  \vspace{0.7em}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.33\textwidth}
+      \claim{Render}\\
+      HTML includes final review, staged artifacts, timing, and provenance.
+    \column{0.33\textwidth}
+      \claim{Serve}\\
+      \artifact{start\_html\_explainer.sh} starts the local Q\&A endpoint.
+    \column{0.33\textwidth}
+      \claim{Record}\\
+      Server status and URL are written back into the audit trail.
+  \end{columns}
+
+  \note{
+  Timing: about 1 minute.
+
+  The explainer is mandatory because the workflow expects review interrogation,
+  not one-way text generation. The default URL is normally localhost on port
+  8765, and batch mode can share one server across papers.
+
+  [Sources] SKILL.md Interactive HTML Requirement; docs/preprocessing.md
+  Evidence Manifest; docs/batch-processing.md Shared Explainer Server.
+  }
+\end{frame}
+
+\begin{frame}{Engineering work keeps the review workflow maintainable}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.5\textwidth}
+      \begin{block}{Development discipline}
+        \begin{itemize}
+          \item Public repo excludes paper PDFs and generated private reviews
+          \item Changes land through worktrees, PRs, CI, and regression checks
+          \item Synthetic fixtures avoid committing real submissions
+        \end{itemize}
+      \end{block}
+    \column{0.45\textwidth}
+      \begin{block}{Validation surface}
+        \begin{itemize}
+          \item Skill eval validation
+          \item Renderer regression fixtures
+          \item Unit tests with coverage gate
+          \item Script smoke tests
+          \item Private eval runner for local papers
+        \end{itemize}
+      \end{block}
+  \end{columns}
+
+  \note{
+  Timing: about 1 minute.
+
+  This slide explains why the repository contains many small scripts and tests:
+  the skill is an operational system. Public fixtures stay synthetic, while
+  private evals can run locally against real papers without committing them.
+
+  [Sources] docs/current-skill-baseline.md Repository State Policy, Validation
+  and CI; docs/development-workflow.md; docs/private-evals.md.
+  }
+\end{frame}
+
+\begin{frame}{What to remember}
+  \begin{block}{Main takeaway}
+    The project turns AI-assisted reviewing from a single model response into
+    a reproducible, inspectable workflow with mandatory evidence, provenance,
+    quality gates, and reviewer follow-up.
+  \end{block}
+
+  \vspace{0.8em}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.31\textwidth}
+      \claim{For reviewers}\\
+      Faster synthesis, but every judgment remains theirs.
+    \column{0.31\textwidth}
+      \claim{For maintainers}\\
+      Stable artifacts make regressions visible.
+    \column{0.31\textwidth}
+      \claim{For deployment}\\
+      Policy, confidentiality, and venue rules still decide when to use it.
+  \end{columns}
+
+  \note{
+  Timing: about 45 seconds, leaving time for one or two questions.
+
+  Close by returning to responsibility. The skill can help structure review
+  work, but it does not make venue policy or reviewer accountability disappear.
+  A good next discussion is which private evals or real review forms should be
+  used to test whether the workflow is actually useful.
+
+  [Sources] README.md Responsible Use; docs/private-evals.md.
+  }
+\end{frame}
+
+\end{document}
